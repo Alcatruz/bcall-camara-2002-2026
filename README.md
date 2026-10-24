@@ -17,6 +17,9 @@ El post está en `index.html` y se publica con GitHub Pages.
 | `R/01_base.R` | Arma la base de votos nominales por período |
 | `R/02_bcall.R` | Estima B-Call, una corrida por período |
 | `R/03_indicadores.R` | Calcula los indicadores del post y exporta `datos/` |
+| `R/04_seguridad.R` | Clasifica las votaciones de seguridad por título, valida contra los descriptores de la BCN y estima B-Call por separado |
+| `datos/seguridad_periodos.csv` | Medianas de `d2` por bloque, votaciones disputadas y correlación de `d1`, en seguridad y en el resto, por período |
+| `datos/seguridad.js` | Los datos de la sección de seguridad que lee la página |
 
 ## Datos y decisiones
 
