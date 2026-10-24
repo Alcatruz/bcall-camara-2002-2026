@@ -2,6 +2,8 @@
 
 B-Call por período legislativo en la Cámara de Diputados de Chile, de 2002-2006 a 2026-2030 (este último con votaciones hasta el 9 de septiembre de 2026).
 
+**📖 [Leer el análisis →](https://alcatruz.github.io/bcall-camara-2002-2026/)**
+
 El post está en `index.html` y se publica con GitHub Pages.
 
 ## Contenido
