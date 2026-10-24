@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Siete Cámaras en dos dimensiones</title>
+<meta name="description" content="Posición y consistencia del voto de los diputados chilenos entre 2002 y 2026, estimadas con B-Call para cada período legislativo.">
+<meta name="author" content="Daniel Alcatruz">
+<meta property="og:title" content="Siete Cámaras en dos dimensiones">
+<meta property="og:description" content="Posición y consistencia del voto en la Cámara de Diputados de Chile, 2002-2026, con B-Call.">
+<meta property="og:type" content="article">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --izq: #e34948;
+  --cen: #1baf7a;
+  --der: #2a78d6;
+  --neutro: #898781;
+  --link: #1c5cab;
+  --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --izq: #e66767;
+    --cen: #199e70;
+    --der: #3987e5;
+    --link: #86b6ef;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface: #1a1a19;
+  --ink: #f0efec;
+  --ink-2: #c3c2b7;
+  --muted: #898781;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10);
+  --izq: #e66767;
+  --cen: #199e70;
+  --der: #3987e5;
+  --link: #86b6ef;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.6;
+}
+main { padding: 0 16px 64px; }
+.col { max-width: 680px; margin: 0 auto; }
+.ancho { max-width: 920px; margin: 0 auto; }
+
+header.cabecera { padding: 56px 0 8px; }
+.antetitulo {
+  font-family: var(--sans); font-size: 13px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 12px;
+}
+h1 {
+  font-family: var(--sans); font-weight: 700; font-size: clamp(32px, 6vw, 46px);
+  line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 16px; text-wrap: balance;
+}
+.bajada { font-size: 21px; line-height: 1.45; color: var(--ink-2); margin: 0 0 20px; text-wrap: pretty; }
+.firma { font-family: var(--sans); font-size: 14px; color: var(--muted); margin: 0; }
+.firma a { color: var(--ink-2); }
+
+h2 {
+  font-family: var(--sans); font-size: 24px; line-height: 1.25; font-weight: 700;
+  margin: 56px 0 12px; letter-spacing: -0.005em;
+}
+h3 { font-family: var(--sans); font-size: 17px; font-weight: 700; margin: 32px 0 8px; }
+p { margin: 0 0 18px; text-wrap: pretty; }
+a { color: var(--link); text-underline-offset: 2px; }
+.var { font-family: var(--sans); font-weight: 600; font-size: 0.92em; }
+
+.recuadro {
+  border: 1px solid var(--border); background: var(--surface); border-radius: 10px;
+  padding: 18px 22px; margin: 28px 0; font-size: 17px; line-height: 1.55;
+}
+.recuadro p:last-child { margin-bottom: 0; }
+
+figure { margin: 32px auto 36px; }
+.grafico {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 8px 4px; overflow: hidden;
+}
+.lienzo { width: 100%; }
+figcaption {
+  font-family: var(--sans); font-size: 14px; line-height: 1.5; color: var(--ink-2);
+  margin: 10px 4px 0; max-width: 680px;
+}
+figcaption b { color: var(--ink); }
+
+.controles {
+  display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  font-family: var(--sans); font-size: 14px; padding: 4px 8px 10px;
+}
+.segmentos { display: flex; flex-wrap: wrap; gap: 4px; }
+.segmentos button {
+  font: inherit; font-size: 13px; color: var(--ink-2); background: transparent;
+  border: 1px solid var(--border); border-radius: 999px; padding: 5px 11px; cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+.segmentos button:hover { color: var(--ink); border-color: var(--axis); }
+.segmentos button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.buscar input {
+  font: inherit; font-size: 14px; color: var(--ink); background: var(--page);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; width: 240px; max-width: 100%;
+}
+.buscar input:focus { outline: 2px solid var(--link); outline-offset: 1px; }
+.contexto { font-family: var(--sans); font-size: 13px; color: var(--muted); padding: 0 8px 4px; min-height: 20px; }
+
+ul.notas { padding-left: 20px; font-size: 16px; line-height: 1.55; color: var(--ink-2); }
+ul.notas li { margin-bottom: 8px; }
+.ref { font-size: 16px; line-height: 1.55; color: var(--ink-2); padding-left: 2em; text-indent: -2em; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 48px 0 0; }
+footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding: 20px 0 0; }
+
+@media (max-width: 600px) {
+  body { font-size: 17.5px; }
+  header.cabecera { padding-top: 36px; }
+  .bajada { font-size: 19px; }
+  h2 { font-size: 21px; margin-top: 44px; }
+  .grafico { padding: 8px 2px 2px; border-radius: 8px; }
+  .recuadro { padding: 14px 16px; }
+}
+</style>
+</head>
+<body>
+<main>
+
+<header class="cabecera col">
+  <p class="antetitulo">Comportamiento legislativo · Chile</p>
+  <h1>Siete Cámaras en dos dimensiones</h1>
+  <p class="bajada">Qué muestran 18.407 votaciones de la Cámara de Diputados sobre la posición y la consistencia del voto, de 2002 a 2026.</p>
+  <p class="firma"><a href="https://github.com/Alcatruz">Daniel Alcatruz</a> · 24 de octubre de 2026</p>
+</header>
+
+<article>
+<div class="col">
+  <p>En 2002-2006 una de cada tres votaciones de proyectos de ley en la Cámara de Diputados fue unánime. En 2022-2026 fue una de cada nueve.</p>
+
+  <p>Para ver qué cambió estimé B-Call para cada período legislativo desde 2002, el primer año con voto nominal publicado, hasta septiembre de 2026. Son siete períodos, 18.407 votaciones de proyectos de ley y 505 diputados. Los resultados dicen tres cosas. La Cámara vota cada vez más dividida. Los dos bloques siguen sin tocarse, pero desde 2018 son más anchos y el centro se repartió entre ambos. Y la consistencia del voto depende menos del partido que de estar en el gobierno o en la oposición.</p>
+
+  <div class="recuadro">
+    <p><b>Cómo leerlo.</b> B-Call (Toro-Maureira et al., 2025) entrega dos medidas por diputado. <span class="var">d1</span> es su posición en el eje que separa a los dos bloques de la sala. <span class="var">d2</span> es la dispersión de sus votos alrededor de esa posición, de modo que un <span class="var">d2</span> bajo indica a alguien que vota casi siempre desde el mismo lugar y uno alto a alguien que se mueve entre bloques. Los bloques se forman con los votos, sin mirar el partido. Cada período se estima por separado, así que lo comparable entre períodos son las formas y las posiciones relativas.</p>
+  </div>
+
+  <h2>La Cámara vota más dividida</h2>
+  <p>Las votaciones disputadas, aquellas en que la opción perdedora reúne al menos un cuarto de los votos, pasaron del 27% en 2002-2006 al 50% en 2022-2026. En lo que va de 2026-2030 llegan al 62%, sobre 377 votaciones. Las unánimes bajaron del 34% al 11%. El quiebre está en 2018, con la primera Cámara elegida por el sistema proporcional que reemplazó al binominal (Ley 20.840) y que subió el número de diputados de 120 a 155.</p>
+</div>
+
+<figure class="ancho">
+  <div class="grafico"><div id="fig-disputa" class="lienzo" role="img" aria-label="Porcentaje de votaciones disputadas y unánimes por período legislativo, 2002 a 2026"></div></div>
+  <figcaption><b>Figura 1.</b> Votaciones disputadas y unánimes por período. Una votación es disputada cuando la opción perdedora reúne al menos 25% de los votos emitidos. 2026-2030 incluye votaciones hasta el 9 de septiembre de 2026.</figcaption>
+</figure>
+
+<div class="col">
+  <h2>Bloques más anchos y un centro repartido</h2>
+  <p>En ningún período los dos bloques se traslapan en <span class="var">d1</span> (Figura 2). Lo que cambió es su ancho. Hasta 2014-2018 la desviación estándar de <span class="var">d1</span> dentro de cada bloque estaba entre 0,06 y 0,13, salvo la izquierda en 2010-2014 (0,24). Desde 2018-2022 los dos bloques se mueven entre 0,16 y 0,27. Dentro de cada uno conviven hoy posiciones bastante más distintas que antes.</p>
+</div>
+
+<figure class="ancho">
+  <div class="grafico"><div id="fig-franjas" class="lienzo" role="img" aria-label="Posición d1 de cada diputado por período legislativo, coloreada por familia política"></div></div>
+  <figcaption><b>Figura 2.</b> Posición (<span class="var">d1</span>) de cada diputado por período legislativo. El color indica la familia del partido con que el diputado inició el período. Al pasar el cursor sobre un punto aparecen el nombre, el partido y el bloque.</figcaption>
+</figure>
+
+<div class="col">
+  <p>El centro explica buena parte del cambio. Entre 2002 y 2018 todos los diputados DC y de centro cayeron en el bloque de izquierda, el de la Concertación y la Nueva Mayoría. En 2018-2022 cuatro de los doce DC quedaron en el bloque de derecha y la mediana del partido se movió de −0,44 a −0,10, casi al medio de la escala. En los dos períodos siguientes la DC, con menos diputados, vuelve a medianas cercanas a −0,40.</p>
+
+  <p>Los independientes, que pasaron de 6 a 37 entre 2002-2006 y 2022-2026, también se reparten entre los dos bloques. En 2026-2030 el PDG hace lo mismo, con seis de sus 14 diputados en el bloque de izquierda y ocho en el de derecha.</p>
+
+  <h2>Estar en el gobierno ordena el voto</h2>
+  <p>Es la regularidad más firme de los siete períodos. El bloque donde están los partidos del gobierno tiene siempre una mediana de <span class="var">d2</span> más baja que el bloque opositor (Figura 3). Con Lagos, Bachelet y Boric vota más parejo la izquierda, y con Piñera y Kast la derecha. La brecha va de 0,04 en el primer gobierno de Bachelet a 0,37 en el primero de Piñera.</p>
+
+  <p>El bloque de gobierno además gana más votaciones en todos los períodos. Con Kast la diferencia es grande. Los diputados del bloque de derecha votan del lado ganador el 87% de las veces y los del bloque de izquierda el 48%.</p>
+</div>
+
+<figure class="ancho">
+  <div class="grafico"><div id="fig-gobierno" class="lienzo" role="img" aria-label="Mediana de d2 de cada bloque por período, con el bloque de gobierno destacado"></div></div>
+  <figcaption><b>Figura 3.</b> Mediana de <span class="var">d2</span> de cada bloque por período. El punto lleno marca el bloque donde están los partidos del gobierno y el punto vacío el de oposición. Un valor más bajo indica votos menos dispersos.</figcaption>
+</figure>
+
+<div class="col">
+  <p>Ahora, hay dos advertencias. En los siete períodos el bloque de gobierno es también el más numeroso, así que gobernar, ser mayoría y ganar votaciones van juntos y estos datos no los separan. Y la estandarización de B-Call le da valores más extremos a quien vota con una minoría chica, de modo que perder seguido sube <span class="var">d2</span> en parte por construcción. Con eso en cuenta, me parece que el punto se sostiene. La consistencia de un diputado depende en buena medida de dónde está respecto del gobierno.</p>
+
+  <h2>¿Rasgo o lugar?</h2>
+  <p>Ahí está la tensión. Solemos pensar la consistencia como un rasgo del diputado. Si depende del gobierno, en cambio, debería moverse cuando el gobierno cambia. Y eso es lo que pasa. Entre los diputados que estuvieron en dos períodos seguidos (362 casos hasta 2022-2026), el percentil de <span class="var">d1</span> en un período anticipa casi por completo el del siguiente, con una correlación de 0,92. El de <span class="var">d2</span> apenas, con 0,25 (Figura 4). La correlación más alta en <span class="var">d2</span>, de 0,59, está entre 2002-2006 y 2006-2010, el único cambio de período sin alternancia en el gobierno. Entre 2022-2026 y lo que va de 2026-2030 es negativa (−0,33).</p>
+</div>
+
+<figure class="ancho">
+  <div class="grafico"><div id="fig-persistencia" class="lienzo" role="img" aria-label="Percentil de d1 y de d2 en un período frente al período siguiente"></div></div>
+  <figcaption><b>Figura 4.</b> Percentil de cada diputado en un período (eje horizontal) y en el siguiente (eje vertical). 362 casos de diputados en dos períodos consecutivos entre 2002-2006 y 2022-2026. La línea diagonal indica el mismo percentil en ambos períodos.</figcaption>
+</figure>
+
+<div class="col">
+  <p>El Frente Amplio lo muestra bien. En 2014-2018 Gabriel Boric y Giorgio Jackson llegaban desde movimientos que no eran parte de la Nueva Mayoría. Boric tuvo el <span class="var">d2</span> más alto de la Cámara y Jackson quedó en el percentil 98. En 2018-2022, en la oposición a Piñera, bajaron a los percentiles 78 y 51. Y en 2022-2026, con el Frente Amplio en el gobierno, los tres diputados con el <span class="var">d2</span> más bajo de la sala fueron Carolina Tello y Félix Bugueño, del Frente Amplio, y Karol Cariola, del PC.</p>
+
+  <p>Pero <span class="var">d2</span> tampoco es puro contexto. Del cuartil más disperso de un período, 35 de 86 diputados siguen ahí en el siguiente, cuando por azar se esperarían unos 21. Y de los 122 diputados con tres o más períodos, seis estuvieron siempre en ese cuartil. Son Gabriel Silber, Pamela Jiles, Pedro Araya, Jorge Burgos, Cristina Girardi y René Saffirio. Para ellos la dispersión sí parece un rasgo.</p>
+
+  <h2>Para explorar</h2>
+  <p>En la Figura 5 están las dos dimensiones juntas, período por período y con los mismos ejes. Se puede buscar a cualquier diputado por su nombre.</p>
+</div>
+
+<figure class="ancho">
+  <div class="grafico">
+    <div class="controles">
+      <div class="segmentos" id="selector-periodo" role="group" aria-label="Período legislativo"></div>
+      <label class="buscar"><span class="sr" hidden>Buscar diputado</span><input id="buscar" type="search" list="nombres" placeholder="Buscar diputado" autocomplete="off"></label>
+      <datalist id="nombres"></datalist>
+    </div>
+    <div class="contexto" id="contexto"></div>
+    <div id="fig-explorar" class="lienzo" role="img" aria-label="d1 y d2 de cada diputado en el período seleccionado"></div>
+  </div>
+  <figcaption><b>Figura 5.</b> <span class="var">d1</span> y <span class="var">d2</span> de cada diputado en el período seleccionado. Hacia la derecha, posiciones más cercanas al bloque de derecha. Hacia arriba, votos más dispersos.</figcaption>
+</figure>
+
+<div class="col">
+  <h2>Lo que queda abierto</h2>
+  <p>Todo esto es descriptivo. Sale de una estimación por período y no de un modelo, pero ordena las preguntas. ¿Vota más parejo quien gobierna o quien gana? ¿Y qué explica a los que votan disperso gobierne quien gobierne? Cualquier explicación de <span class="var">d2</span> tiene que partir por la primera antes de mirar al partido o al distrito.</p>
+
+  <p>Para separar gobierno de mayoría hay una prueba a mano, con estimaciones por año legislativo y los diputados que cambian de lado dentro de un mismo período. Se confirmaría si su <span class="var">d2</span> baja al pasar al oficialismo aunque el tamaño de los bloques no cambie. Se falsificaría si <span class="var">d2</span> sigue al bloque más grande y no al gobierno.</p>
+
+  <h3>Datos, código y decisiones</h3>
+  <ul class="notas">
+    <li>Votaciones y votos nominales de la API de datos abiertos de la Cámara de Diputados (opendata.camara.cl), entre el 19 de marzo de 2002 y el 9 de septiembre de 2026. Los registros nominales comienzan en 2002, por eso no hay períodos anteriores.</li>
+    <li>Solo votaciones de proyectos de ley con número de boletín. Quedan fuera los proyectos de resolución, los acuerdos y las votaciones reglamentarias. B-Call descarta además las votaciones sin varianza, por lo que usa entre el 66% y el 89% de las votaciones de cada período.</li>
+    <li>A favor vale 1, en contra −1 y abstención 0. Pareos, dispensas y ausencias quedan como dato faltante.</li>
+    <li>Estimación con el paquete <a href="https://github.com/bcallr/bcall">bcall</a> para R, con distancia Manhattan y un umbral de participación de 10%. Con ese umbral quedan fuera cuatro diputados de 2002-2006 y uno de 2014-2018.</li>
+    <li>Para orientar <span class="var">d1</span> se usó como referencia a Pablo Longueira (2002-2006), Francisco Chahuán (2006-2010), José Antonio Kast (2010-2018) y Jorge Alessandri (2018-2030).</li>
+    <li>El partido es el vigente al inicio del período, o al momento de asumir en el caso de los reemplazos. La izquierda agrupa a PS, PPD, PC, PR, Frente Amplio y sus partidos fundadores, FRVS, Partido Liberal y otros menores. El centro agrupa a DC, PRI, Demócratas y Amarillos. La derecha agrupa a UDI, RN, Republicanos, Evópoli, PNL, PSC y otros menores. El PDG y los independientes van aparte.</li>
+    <li>El voto ganador es la opción, a favor o en contra, que reunió más votos emitidos, sin considerar el quórum.</li>
+    <li>El código, las estimaciones por diputado (<a href="datos/bcall_periodos.csv">bcall_periodos.csv</a>) y el resumen por período (<a href="datos/resumen_periodos.csv">resumen_periodos.csv</a>) están en el <a href="https://github.com/Alcatruz/bcall-camara-2002-2026">repositorio</a>.</li>
+  </ul>
+
+  <h3>Referencia</h3>
+  <p class="ref">Toro-Maureira, S., Reutter, J., Valenzuela, L., Alcatruz, D. y Valenzuela, M. (2025). B-Call: integrating ideological position and voting cohesion in legislative behavior. <i>Frontiers in Political Science, 7</i>, 1670089. <a href="https://doi.org/10.3389/fpos.2025.1670089">https://doi.org/10.3389/fpos.2025.1670089</a></p>
+
+  <hr>
+  <footer>Daniel Alcatruz · 2026</footer>
+</div>
+</article>
+</main>
+
+<script src="datos/datos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-basic-dist-min@2.35.2/plotly-basic.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var B = window.BCALL;
+  if (!B || !window.Plotly) return;
+
+  var PER = B.resumen.map(function (r) { return r.p; });
+  var FAM = [
+    { k: "izq", label: "Izquierda", color: "--izq", symbol: "circle" },
+    { k: "cen", label: "Centro", color: "--cen", symbol: "diamond" },
+    { k: "der", label: "Derecha", color: "--der", symbol: "circle" },
+    { k: "pdg", label: "PDG", color: "--neutro", symbol: "triangle-up" },
+    { k: "ind", label: "Independientes", color: "--neutro", symbol: "circle" }
+  ];
+  var BLOQUE = { left: "izquierda", right: "derecha" };
+  var CONFIG = { displayModeBar: false, responsive: true, scrollZoom: false };
+
+  function tok() {
+    var s = getComputedStyle(document.documentElement);
+    var g = function (n) { return s.getPropertyValue(n).trim(); };
+    return {
+      surface: g("--surface"), ink: g("--ink"), ink2: g("--ink-2"), muted: g("--muted"),
+      grid: g("--grid"), axis: g("--axis"),
+      "--izq": g("--izq"), "--cen": g("--cen"), "--der": g("--der"), "--neutro": g("--neutro")
+    };
+  }
+  function num(x, d) {
+    return x.toLocaleString("es-CL", { minimumFractionDigits: d, maximumFractionDigits: d });
+  }
+  function pct(x) { return num(100 * x, 0) + "%"; }
+  function entero(x) { return x.toLocaleString("es-CL"); }
+  function hash(s) {
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return (h >>> 0) / 4294967295;
+  }
+  function ancho(id) { return document.getElementById(id).clientWidth; }
+
+  function base(T, extra) {
+    var l = {
+      paper_bgcolor: T.surface, plot_bgcolor: T.surface,
+      font: { family: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', size: 12, color: T.ink2 },
+      separators: ",.",
+      margin: { l: 56, r: 16, t: 40, b: 48 },
+      hoverlabel: { bgcolor: T.surface, bordercolor: T.axis, font: { color: T.ink, size: 13 } },
+      legend: { orientation: "h", x: 0, xanchor: "left", y: 1.02, yanchor: "bottom", font: { color: T.ink2, size: 12 } },
+      dragmode: false
+    };
+    for (var k in extra) l[k] = extra[k];
+    return l;
+  }
+  function eje(T, extra) {
+    var a = {
+      gridcolor: T.grid, linecolor: T.axis, zeroline: false, fixedrange: true,
+      tickfont: { color: T.muted }, title: { font: { color: T.ink2, size: 12 } }
+    };
+    for (var k in extra) {
+      if (k === "title") a.title.text = extra[k]; else a[k] = extra[k];
+    }
+    return a;
+  }
+
+  // Figura 1 ------------------------------------------------------------------
+  function figDisputa(T) {
+    var R = B.resumen;
+    var ult = R.length - 1;
+    var ticks = PER.map(function (p, i) { return i === ult ? p + "<br>(parcial)" : p; });
+    function serie(campo, nombre, color) {
+      return {
+        type: "scatter", mode: "lines+markers", name: nombre,
+        x: PER, y: R.map(function (r) { return 100 * r[campo]; }),
+        line: { color: color, width: 2 },
+        marker: {
+          size: 9, color: R.map(function (r, i) { return i === ult ? T.surface : color; }),
+          line: { color: color, width: 2 }
+        },
+        customdata: R.map(function (r) { return [pct(r[campo]), entero(r.votaciones)]; }),
+        hovertemplate: nombre + " %{customdata[0]}<extra></extra>"
+      };
+    }
+    var data = [
+      serie("disputadas", "Disputadas", T.ink),
+      serie("unanimes", "Unánimes", T.muted)
+    ];
+    var layout = base(T, {
+      height: 340, hovermode: "x unified",
+      margin: { l: 48, r: 16, t: 36, b: 56 },
+      xaxis: eje(T, { tickvals: PER, ticktext: ticks, showgrid: false, showline: true }),
+      yaxis: eje(T, { range: [0, 70], ticksuffix: "%", dtick: 20 })
+    });
+    Plotly.react("fig-disputa", data, layout, CONFIG);
+  }
+
+  // Figura 2 ------------------------------------------------------------------
+  function figFranjas(T) {
+    var data = FAM.map(function (F) {
+      var filas = B.est.filter(function (d) { return d.f === F.k; });
+      return {
+        type: "scatter", mode: "markers", name: F.label,
+        x: filas.map(function (d) { return d.d1; }),
+        y: filas.map(function (d) { return PER.indexOf(d.p) + (hash(d.n + d.p) - 0.5) * 0.6; }),
+        customdata: filas.map(function (d) { return [d.n, d.pa, d.p, num(d.d1, 2), num(d.d2, 2), BLOQUE[d.b]]; }),
+        hovertemplate: "<b>%{customdata[0]}</b><br>%{customdata[1]} · %{customdata[2]}<br>d1 %{customdata[3]} · d2 %{customdata[4]}<br>Bloque de %{customdata[5]}<extra></extra>",
+        marker: { color: T[F.color], symbol: F.symbol, size: 7, opacity: 0.9, line: { color: T.surface, width: 1 } }
+      };
+    });
+    var angosto = ancho("fig-franjas") < 560;
+    var layout = base(T, {
+      height: angosto ? 520 : 480,
+      margin: { l: angosto ? 70 : 78, r: 12, t: angosto ? 56 : 40, b: 52 },
+      yaxis: eje(T, { tickvals: PER.map(function (p, i) { return i; }), ticktext: PER, autorange: "reversed", showgrid: false, range: [6.5, -0.5] }),
+      xaxis: eje(T, { title: "d1  (izquierda ←   → derecha)" })
+    });
+    layout.yaxis.autorange = false;
+    Plotly.react("fig-franjas", data, layout, CONFIG);
+  }
+
+  // Figura 3 ------------------------------------------------------------------
+  function figGobierno(T) {
+    var R = B.resumen;
+    var y = R.map(function (r, i) { return i; });
+    var tramo = { type: "scatter", mode: "lines", x: [], y: [], line: { color: T.axis, width: 2 }, hoverinfo: "skip", showlegend: false };
+    R.forEach(function (r, i) { tramo.x.push(r.d2_left, r.d2_right, null); tramo.y.push(i, i, null); });
+    function lado(s, etiqueta, color) {
+      return {
+        type: "scatter", mode: "markers", name: etiqueta, showlegend: false,
+        x: R.map(function (r) { return r["d2_" + s]; }), y: y,
+        marker: {
+          size: 14, color: R.map(function (r) { return r.bloque_gob === s ? color : T.surface; }),
+          line: { color: color, width: 2.5 }
+        },
+        customdata: R.map(function (r) {
+          return [r.p, r.bloque_gob === s ? "gobierno" : "oposición", num(r["d2_" + s], 2), pct(r["gana_" + s]), r["n_" + s]];
+        }),
+        hovertemplate: "<b>Bloque de " + etiqueta.toLowerCase() + "</b> · %{customdata[1]}<br>%{customdata[0]}<br>Mediana de d2 %{customdata[2]}<br>Voto ganador %{customdata[3]}<br>%{customdata[4]} diputados<extra></extra>"
+      };
+    }
+    function leyenda(nombre, color, lleno) {
+      return {
+        type: "scatter", mode: "markers", name: nombre, x: [null], y: [null], hoverinfo: "skip",
+        marker: { size: 12, color: lleno ? color : T.surface, line: { color: color, width: 2.5 } }
+      };
+    }
+    var data = [
+      tramo,
+      lado("left", "Izquierda", T["--izq"]),
+      lado("right", "Derecha", T["--der"]),
+      leyenda("Bloque de izquierda", T["--izq"], true),
+      leyenda("Bloque de derecha", T["--der"], true),
+      leyenda("Punto vacío, oposición", T.muted, false)
+    ];
+    var layout = base(T, {
+      height: 430,
+      margin: { l: 92, r: 16, t: 44, b: 52 },
+      yaxis: eje(T, {
+        tickvals: y, ticktext: R.map(function (r) { return r.p + "<br>" + r.presidente; }),
+        autorange: false, range: [6.6, -0.6], showgrid: false
+      }),
+      xaxis: eje(T, { title: "Mediana de d2  (más bajo, votos menos dispersos)" })
+    });
+    Plotly.react("fig-gobierno", data, layout, CONFIG);
+  }
+
+  // Figura 4 ------------------------------------------------------------------
+  function figPersistencia(T) {
+    var P = B.pares.filter(function (d) { return d.s !== "2026-2030"; });
+    var angosto = ancho("fig-persistencia") < 600;
+    var dom1 = angosto ? { x: [0, 1], y: [0.58, 1] } : { x: [0, 0.45], y: [0, 1] };
+    var dom2 = angosto ? { x: [0, 1], y: [0, 0.42] } : { x: [0.55, 1], y: [0, 1] };
+    function puntos(a, b, ejeX, ejeY) {
+      return {
+        type: "scatter", mode: "markers", xaxis: ejeX, yaxis: ejeY, showlegend: false,
+        x: P.map(function (d) { return 100 * d[a]; }), y: P.map(function (d) { return 100 * d[b]; }),
+        customdata: P.map(function (d) { return [d.n, d.p, d.s, num(100 * d[a], 0), num(100 * d[b], 0)]; }),
+        hovertemplate: "<b>%{customdata[0]}</b><br>%{customdata[1]} percentil %{customdata[3]}<br>%{customdata[2]} percentil %{customdata[4]}<extra></extra>",
+        marker: { size: 7, color: T.ink2, opacity: 0.55, line: { color: T.surface, width: 1 } }
+      };
+    }
+    function diagonal(ejeX, ejeY) {
+      return { type: "scatter", mode: "lines", xaxis: ejeX, yaxis: ejeY, x: [0, 100], y: [0, 100], showlegend: false, hoverinfo: "skip", line: { color: T.axis, width: 1.5 } };
+    }
+    var data = [diagonal("x", "y"), puntos("d1a", "d1b", "x", "y"), diagonal("x2", "y2"), puntos("d2a", "d2b", "x2", "y2")];
+    var ps = B.persistencia;
+    var comun = { range: [-3, 103], dtick: 25 };
+    function ejeP(dom, titulo, ancla) {
+      var a = eje(T, { domain: dom, title: titulo, anchor: ancla, range: comun.range, dtick: comun.dtick });
+      return a;
+    }
+    var layout = base(T, {
+      height: angosto ? 720 : 400,
+      margin: { l: 52, r: 12, t: 40, b: 48 },
+      xaxis: ejeP(dom1.x, "Percentil en un período", "y"),
+      yaxis: ejeP(dom1.y, "Percentil en el siguiente", "x"),
+      xaxis2: ejeP(dom2.x, "Percentil en un período", "y2"),
+      yaxis2: ejeP(dom2.y, angosto ? "Percentil en el siguiente" : "", "x2"),
+      annotations: [
+        { text: "<b>Posición (d1)</b>  ·  r = " + num(ps.r_d1_sin26, 2), xref: "paper", yref: "paper", x: dom1.x[0], y: dom1.y[1], xanchor: "left", yanchor: "bottom", yshift: 8, showarrow: false, font: { color: T.ink, size: 13 } },
+        { text: "<b>Consistencia (d2)</b>  ·  r = " + num(ps.r_d2_sin26, 2), xref: "paper", yref: "paper", x: dom2.x[0], y: dom2.y[1], xanchor: "left", yanchor: "bottom", yshift: 8, showarrow: false, font: { color: T.ink, size: 13 } }
+      ]
+    });
+    if (angosto) layout.margin.t = 32;
+    Plotly.react("fig-persistencia", data, layout, CONFIG);
+  }
+
+  // Figura 5 ------------------------------------------------------------------
+  var estado = { periodo: PER[PER.length - 2], busca: "" };
+  var rango = (function () {
+    var x = B.est.map(function (d) { return d.d1; }), y = B.est.map(function (d) { return d.d2; });
+    return {
+      x: [Math.min.apply(null, x) - 0.08, Math.max.apply(null, x) + 0.08],
+      y: [Math.min.apply(null, y) - 0.06, Math.max.apply(null, y) + 0.12]
+    };
+  })();
+  function normaliza(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+
+  function figExplorar(T) {
+    var p = estado.periodo;
+    var filas = B.est.filter(function (d) { return d.p === p; });
+    var data = FAM.map(function (F) {
+      var f = filas.filter(function (d) { return d.f === F.k; });
+      return {
+        type: "scatter", mode: "markers", name: F.label,
+        x: f.map(function (d) { return d.d1; }), y: f.map(function (d) { return d.d2; }),
+        customdata: f.map(function (d) { return [d.n, d.pa, num(d.d1, 2), num(d.d2, 2), BLOQUE[d.b], pct(d.part)]; }),
+        hovertemplate: "<b>%{customdata[0]}</b><br>%{customdata[1]} · bloque de %{customdata[4]}<br>d1 %{customdata[2]} · d2 %{customdata[3]}<br>Participación %{customdata[5]}<extra></extra>",
+        marker: { color: T[F.color], symbol: F.symbol, size: 9, opacity: 0.9, line: { color: T.surface, width: 1.5 } }
+      };
+    });
+    var q = normaliza(estado.busca.trim());
+    if (q.length >= 3) {
+      var hit = filas.filter(function (d) { return normaliza(d.n).indexOf(q) !== -1; });
+      data.push({
+        type: "scatter", mode: "markers+text", name: "Búsqueda", showlegend: false, hoverinfo: "skip",
+        x: hit.map(function (d) { return d.d1; }), y: hit.map(function (d) { return d.d2; }),
+        text: hit.map(function (d) { return d.n; }),
+        textposition: hit.map(function (d) { return d.d2 > rango.y[1] - 0.3 ? "bottom center" : "top center"; }),
+        textfont: { color: T.ink, size: 12 },
+        marker: { size: 18, color: "rgba(0,0,0,0)", line: { color: T.ink, width: 2 } }
+      });
+    }
+    var angosto = ancho("fig-explorar") < 560;
+    var layout = base(T, {
+      height: angosto ? 460 : 520,
+      margin: { l: 52, r: 12, t: angosto ? 56 : 40, b: 52 },
+      xaxis: eje(T, { title: "d1  (izquierda ←   → derecha)", range: rango.x }),
+      yaxis: eje(T, { title: "d2  (dispersión del voto)", range: rango.y })
+    });
+    Plotly.react("fig-explorar", data, layout, CONFIG);
+
+    var r = B.resumen.filter(function (x) { return x.p === p; })[0];
+    var extra = p === PER[PER.length - 1] ? ", hasta el 9 de septiembre de 2026" : "";
+    document.getElementById("contexto").textContent =
+      "Gobierno de " + r.presidente + " · " + entero(r.votaciones) + " votaciones" + extra + " · " + r.diputados + " diputados";
+  }
+
+  function armarControles() {
+    var cont = document.getElementById("selector-periodo");
+    PER.forEach(function (p) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = p;
+      b.setAttribute("aria-pressed", p === estado.periodo ? "true" : "false");
+      b.addEventListener("click", function () {
+        estado.periodo = p;
+        Array.prototype.forEach.call(cont.children, function (c) { c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
+        figExplorar(tok());
+      });
+      cont.appendChild(b);
+    });
+    var dl = document.getElementById("nombres");
+    var vistos = {};
+    B.est.map(function (d) { return d.n; }).sort(function (a, b) { return a.localeCompare(b, "es"); }).forEach(function (n) {
+      if (vistos[n]) return; vistos[n] = true;
+      var o = document.createElement("option"); o.value = n; dl.appendChild(o);
+    });
+    document.getElementById("buscar").addEventListener("input", function (e) {
+      estado.busca = e.target.value;
+      figExplorar(tok());
+    });
+  }
+
+  function todo() {
+    var T = tok();
+    figDisputa(T); figFranjas(T); figGobierno(T); figPersistencia(T); figExplorar(T);
+  }
+
+  armarControles();
+  todo();
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", todo);
+  }
+  var t;
+  window.addEventListener("resize", function () {
+    clearTimeout(t);
+    t = setTimeout(function () { var T = tok(); figFranjas(T); figPersistencia(T); figExplorar(T); }, 200);
+  });
+})();
+</script>
+</body>
+</html>
