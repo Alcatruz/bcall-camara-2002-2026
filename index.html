@@ -189,7 +189,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
 
 <figure class="ancho">
   <div class="grafico"><div id="fig-franjas" class="lienzo" role="img" aria-label="Posición d1 de cada diputado por período legislativo, coloreada por familia política"></div></div>
-  <figcaption><b>Figura 2.</b> Posición (<span class="var">d1</span>) de cada diputado por período legislativo. El color indica la familia del partido con que el diputado inició el período. Al pasar el cursor sobre un punto aparecen el nombre, el partido y el bloque.</figcaption>
+  <figcaption><b>Figura 2.</b> Posición (<span class="var">d1</span>) de cada diputado por período legislativo. El color indica la familia de la última militancia que registra la Cámara para el diputado en ese período. Al pasar el cursor sobre un punto aparecen el nombre, el partido y el bloque.</figcaption>
 </figure>
 
 <div class="col">
@@ -269,7 +269,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
     <li>A favor vale 1, en contra −1 y abstención 0. Pareos, dispensas y ausencias quedan como dato faltante.</li>
     <li>Estimación con el paquete <a href="https://github.com/bcallr/bcall">bcall</a> para R, con distancia Manhattan y un umbral de participación de 10%. Con ese umbral quedan fuera cuatro diputados de 2002-2006 y uno de 2014-2018.</li>
     <li>Para orientar <span class="var">d1</span> se usó como referencia a Pablo Longueira (2002-2006), Francisco Chahuán (2006-2010), José Antonio Kast (2010-2018) y Jorge Alessandri (2018-2030).</li>
-    <li>El partido es el vigente al inicio del período, o al momento de asumir en el caso de los reemplazos. La izquierda agrupa a PS, PPD, PC, PR, Frente Amplio y sus partidos fundadores, FRVS, Partido Liberal y otros menores. El centro agrupa a DC, PRI, Demócratas y Amarillos. La derecha agrupa a UDI, RN, Republicanos, Evópoli, PNL, PSC y otros menores. El PDG y los independientes van aparte.</li>
+    <li>El partido es la última militancia que registra la Cámara para cada diputado dentro del período. La izquierda agrupa a PS, PPD, PC, PR, Frente Amplio y sus partidos fundadores, FRVS, Partido Liberal y otros menores. El centro agrupa a DC, PRI, Demócratas y Amarillos. La derecha agrupa a UDI, RN, Republicanos, Evópoli, PNL, PSC y otros menores. El PDG y los independientes van aparte.</li>
     <li>El voto ganador es la opción, a favor o en contra, que reunió más votos emitidos, sin considerar el quórum.</li>
     <li>Las votaciones de seguridad se clasificaron por el título de su proyecto, con un diccionario de delitos y penas, policías, Ministerio Público, cárceles, drogas, armas, terrorismo y orden público, más los proyectos de la comisión de Seguridad Ciudadana (boletines con sufijo 25). Quedan fuera los tratados internacionales, los juzgados de policía local y los proyectos de derechos humanos o de aborto. Los títulos vienen de tramitacion.senado.cl.</li>
     <li>El diccionario se armó mirando la mitad de los proyectos que tienen descriptores temáticos de la BCN y se midió una sola vez en la otra mitad, 1.380 proyectos, con un acuerdo de 96,8% (kappa 0,77). El título recupera el 84% de lo que los descriptores marcan como seguridad y suma proyectos que ellos no clasifican así, como varios de narcotráfico y cárceles. Los descriptores no sirven para clasificar porque casi no cubren los proyectos posteriores a 2018.</li>

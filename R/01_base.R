@@ -13,8 +13,8 @@
 #                                                   balance; cubre del 15 de
 #                                                   junio al 9 de septiembre
 #   data/diputados.rds                               nombre y sexo
-#   data/militancias_x_periodo.rds                   partido vigente al inicio
-#                                                   del período
+#   data/militancias_x_periodo.rds                   última militancia que la
+#                                                   Cámara registra en el período
 #
 # FILTROS (todos explícitos acá)
 #   1. Solo votaciones de proyectos de ley con número de boletín (convención
@@ -103,9 +103,10 @@ cat("votaciones con boletín sin votos nominales:", length(sin_votos), "\n")
 # ---------------------------------------------------------------------------
 # PASO 3 — metadatos por diputado x período
 # ---------------------------------------------------------------------------
-# Partido. Se usa la militancia vigente al inicio del período (o al entrar,
-# para los reemplazos), que es la etiqueta con que el diputado llegó. Si no
-# está en militancias_x_periodo se usa partido_id de diputados.rds.
+# Partido. militancias_x_periodo guarda la última militancia que la Cámara
+# registra para el diputado dentro del período (por ejemplo, Kast figura como
+# independiente en 2014-2018 porque la Cámara lo registra así desde julio de
+# 2017). Si no está ahí se usa partido_id de diputados.rds.
 dip <- read_rds("data/diputados.rds") %>%
   mutate(id_parlamentario = as.character(id_parlamentario)) %>%
   inner_join(PERIODOS, by = c("periodo_inicio" = "inicio")) %>%
