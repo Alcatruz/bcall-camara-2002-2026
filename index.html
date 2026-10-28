@@ -193,19 +193,36 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
 </figure>
 
 <div class="col">
+  <p>La Figura 3 muestra las mismas posiciones como densidad, con una curva por bloque. Con el botón de la figura se pasa a <span class="var">d2</span>.</p>
+</div>
+
+<figure class="ancho">
+  <div class="grafico">
+    <div class="controles">
+      <div class="segmentos" id="sel-densidad" role="group" aria-label="Medida">
+        <button type="button" data-v="d1" aria-pressed="true">Posición (d1)</button>
+        <button type="button" data-v="d2" aria-pressed="false">Dispersión (d2)</button>
+      </div>
+    </div>
+    <div id="fig-densidad" class="lienzo" role="img" aria-label="Densidad de d1 o de d2 en cada bloque, por período legislativo"></div>
+  </div>
+  <figcaption><b>Figura 3.</b> Distribución de <span class="var">d1</span> o de <span class="var">d2</span> en cada bloque, por período. Cada curva es una densidad con núcleo gaussiano, multiplicada por la proporción de diputados del bloque, de modo que su área es proporcional al tamaño del bloque. La línea punteada marca la mediana. 2026-2030 incluye votaciones hasta el 9 de septiembre de 2026.</figcaption>
+</figure>
+
+<div class="col">
   <p>El centro explica buena parte del cambio. Entre 2002 y 2018 todos los diputados DC y de centro cayeron en el bloque de izquierda, el de la Concertación y la Nueva Mayoría. En 2018-2022 cuatro de los doce DC quedaron en el bloque de derecha y la mediana del partido se movió de −0,44 a −0,10, casi al medio de la escala. En los dos períodos siguientes la DC, con menos diputados, vuelve a medianas cercanas a −0,40.</p>
 
   <p>Los independientes, que pasaron de 6 a 37 entre 2002-2006 y 2022-2026, también se reparten entre los dos bloques. En 2026-2030 el PDG hace lo mismo, con seis de sus 14 diputados en el bloque de izquierda y ocho en el de derecha.</p>
 
   <h2>Estar en el gobierno ordena el voto</h2>
-  <p>Es la regularidad más firme de los siete períodos. El bloque donde están los partidos del gobierno tiene siempre una mediana de <span class="var">d2</span> más baja que el bloque opositor (Figura 3). Con Lagos, Bachelet y Boric vota más parejo la izquierda, y con Piñera y Kast la derecha. La brecha va de 0,04 en el primer gobierno de Bachelet a 0,37 en el primero de Piñera.</p>
+  <p>Es la regularidad más firme de los siete períodos. El bloque donde están los partidos del gobierno tiene siempre una mediana de <span class="var">d2</span> más baja que el bloque opositor (Figura 4). Con Lagos, Bachelet y Boric vota más parejo la izquierda, y con Piñera y Kast la derecha. La brecha va de 0,04 en el primer gobierno de Bachelet a 0,37 en el primero de Piñera.</p>
 
   <p>El bloque de gobierno además gana más votaciones en todos los períodos. Con Kast la diferencia es grande. Los diputados del bloque de derecha votan del lado ganador el 87% de las veces y los del bloque de izquierda el 48%.</p>
 </div>
 
 <figure class="ancho">
   <div class="grafico"><div id="fig-gobierno" class="lienzo" role="img" aria-label="Mediana de d2 de cada bloque por período, con el bloque de gobierno destacado"></div></div>
-  <figcaption><b>Figura 3.</b> Mediana de <span class="var">d2</span> de cada bloque por período. El punto lleno marca el bloque donde están los partidos del gobierno y el punto vacío el de oposición. Un valor más bajo indica votos menos dispersos.</figcaption>
+  <figcaption><b>Figura 4.</b> Mediana de <span class="var">d2</span> de cada bloque por período. El punto lleno marca el bloque donde están los partidos del gobierno y el punto vacío el de oposición. Un valor más bajo indica votos menos dispersos.</figcaption>
 </figure>
 
 <div class="col">
@@ -214,24 +231,24 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
   <h2>La excepción, la seguridad</h2>
   <p>Hay una materia donde el patrón se rompe. Clasifiqué las votaciones según el título de su proyecto, y 1.585 resultaron de seguridad, el 8,6% del total, sobre 343 proyectos de delitos y penas, policías, cárceles, drogas, armas o terrorismo. Después estimé B-Call por separado para esas votaciones y para el resto, en cada período.</p>
 
-  <p>En el resto de las votaciones el bloque de gobierno vota más parejo en los siete períodos. En seguridad no siempre (Figura 4). Con los gobiernos de derecha la ventaja se mantiene y crece, y con el segundo gobierno de Piñera pasa de 0,04 a 0,30. Con Lagos y con el primer gobierno de Bachelet la seguridad se comporta como el resto. Pero desde 2014 cambia. Con Bachelet II y con Boric, en seguridad vota más parejo la derecha aunque esté en la oposición, con mucha distancia en el primer caso y por poco en el segundo.</p>
+  <p>En el resto de las votaciones el bloque de gobierno vota más parejo en los siete períodos. En seguridad no siempre (Figura 5). Con los gobiernos de derecha la ventaja se mantiene y crece, y con el segundo gobierno de Piñera pasa de 0,04 a 0,30. Con Lagos y con el primer gobierno de Bachelet la seguridad se comporta como el resto. Pero desde 2014 cambia. Con Bachelet II y con Boric, en seguridad vota más parejo la derecha aunque esté en la oposición, con mucha distancia en el primer caso y por poco en el segundo.</p>
 </div>
 
 <figure class="ancho">
   <div class="grafico"><div id="fig-seguridad" class="lienzo" role="img" aria-label="Diferencia de d2 entre bloques en votaciones de seguridad y en el resto, por período"></div></div>
-  <figcaption><b>Figura 4.</b> Diferencia entre la mediana de <span class="var">d2</span> del bloque de izquierda y la del bloque de derecha, en las votaciones de seguridad y en el resto, por período. A la derecha del cero vota más parejo el bloque de derecha y a la izquierda del cero, el de izquierda. Junto a cada período, el presidente y el lado del gobierno.</figcaption>
+  <figcaption><b>Figura 5.</b> Diferencia entre la mediana de <span class="var">d2</span> del bloque de izquierda y la del bloque de derecha, en las votaciones de seguridad y en el resto, por período. A la derecha del cero vota más parejo el bloque de derecha y a la izquierda del cero, el de izquierda. Junto a cada período, el presidente y el lado del gobierno.</figcaption>
 </figure>
 
 <div class="col">
   <p>En casi todos los períodos las votaciones de seguridad son además menos disputadas. En 2022-2026 lo fueron el 40%, contra el 52% del resto. Y las posiciones casi no cambian, porque la correlación entre el <span class="var">d1</span> estimado solo con seguridad y el de todas las votaciones va de 0,84 a 0,97. Lo que se mueve es la regularidad con que cada diputado vota desde su lugar. Comparando a diputados a igual distancia del centro, el patrón se repite. Una lectura posible es que la derecha es dueña del tema y ordena a los suyos en seguridad esté donde esté, mientras la izquierda en el gobierno se divide en esos proyectos. Con siete períodos y subconjuntos chicos, es una pista y no una prueba.</p>
 
   <h2>¿Rasgo o lugar?</h2>
-  <p>Ahí está la tensión. Solemos pensar la consistencia como un rasgo del diputado. Si depende del gobierno, en cambio, debería moverse cuando el gobierno cambia. Y eso es lo que pasa. Entre los diputados que estuvieron en dos períodos seguidos (362 casos hasta 2022-2026), el percentil de <span class="var">d1</span> en un período anticipa casi por completo el del siguiente, con una correlación de 0,92. El de <span class="var">d2</span> apenas, con 0,25 (Figura 5). La correlación más alta en <span class="var">d2</span>, de 0,59, está entre 2002-2006 y 2006-2010, el único cambio de período sin alternancia en el gobierno. Entre 2022-2026 y lo que va de 2026-2030 es negativa (−0,33).</p>
+  <p>Ahí está la tensión. Solemos pensar la consistencia como un rasgo del diputado. Si depende del gobierno, en cambio, debería moverse cuando el gobierno cambia. Y eso es lo que pasa. Entre los diputados que estuvieron en dos períodos seguidos (362 casos hasta 2022-2026), el percentil de <span class="var">d1</span> en un período anticipa casi por completo el del siguiente, con una correlación de 0,92. El de <span class="var">d2</span> apenas, con 0,25 (Figura 6). La correlación más alta en <span class="var">d2</span>, de 0,59, está entre 2002-2006 y 2006-2010, el único cambio de período sin alternancia en el gobierno. Entre 2022-2026 y lo que va de 2026-2030 es negativa (−0,33).</p>
 </div>
 
 <figure class="ancho">
   <div class="grafico"><div id="fig-persistencia" class="lienzo" role="img" aria-label="Percentil de d1 y de d2 en un período frente al período siguiente"></div></div>
-  <figcaption><b>Figura 5.</b> Percentil de cada diputado en un período (eje horizontal) y en el siguiente (eje vertical). 362 casos de diputados en dos períodos consecutivos entre 2002-2006 y 2022-2026. La línea diagonal indica el mismo percentil en ambos períodos.</figcaption>
+  <figcaption><b>Figura 6.</b> Percentil de cada diputado en un período (eje horizontal) y en el siguiente (eje vertical). 362 casos de diputados en dos períodos consecutivos entre 2002-2006 y 2022-2026. La línea diagonal indica el mismo percentil en ambos períodos.</figcaption>
 </figure>
 
 <div class="col">
@@ -240,7 +257,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
   <p>Pero <span class="var">d2</span> tampoco es puro contexto. Del cuartil más disperso de un período, 35 de 86 diputados siguen ahí en el siguiente, cuando por azar se esperarían unos 21. Si se compara a cada diputado con los que están a igual distancia del centro, la cifra es casi la misma, 36 de 84. Y de los 122 diputados con tres o más períodos, seis estuvieron siempre en ese cuartil. Son Gabriel Silber, Pamela Jiles, Pedro Araya, Jorge Burgos, Cristina Girardi y René Saffirio. Silber, Araya y Burgos estuvieron casi siempre cerca del centro, pero comparados con los diputados a igual distancia siguen en el cuartil más disperso en todos sus períodos, igual que Jiles y Saffirio. Girardi, que estuvo siempre en un extremo, queda ahí en dos de sus tres períodos. Para ellos la dispersión sí parece un rasgo.</p>
 
   <h2>Para explorar</h2>
-  <p>En la Figura 6 están las dos dimensiones juntas, período por período y con los mismos ejes. Se puede buscar a cualquier diputado por su nombre.</p>
+  <p>En la Figura 7 están las dos dimensiones juntas, período por período y con los mismos ejes. Se puede buscar a cualquier diputado por su nombre.</p>
 </div>
 
 <figure class="ancho">
@@ -253,7 +270,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
     <div class="contexto" id="contexto"></div>
     <div id="fig-explorar" class="lienzo" role="img" aria-label="d1 y d2 de cada diputado en el período seleccionado"></div>
   </div>
-  <figcaption><b>Figura 6.</b> <span class="var">d1</span> y <span class="var">d2</span> de cada diputado en el período seleccionado. Hacia la derecha, posiciones más cercanas al bloque de derecha. Hacia arriba, votos más dispersos.</figcaption>
+  <figcaption><b>Figura 7.</b> <span class="var">d1</span> y <span class="var">d2</span> de cada diputado en el período seleccionado. Hacia la derecha, posiciones más cercanas al bloque de derecha. Hacia arriba, votos más dispersos.</figcaption>
 </figure>
 
 <div class="col">
@@ -273,7 +290,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
     <li>El voto ganador es la opción, a favor o en contra, que reunió más votos emitidos, sin considerar el quórum.</li>
     <li>Las votaciones de seguridad se clasificaron por el título de su proyecto, con un diccionario de delitos y penas, policías, Ministerio Público, cárceles, drogas, armas, terrorismo y orden público, más los proyectos de la comisión de Seguridad Ciudadana (boletines con sufijo 25). Quedan fuera los tratados internacionales, los juzgados de policía local y los proyectos de derechos humanos o de aborto. Los títulos vienen de tramitacion.senado.cl.</li>
     <li>El diccionario se armó mirando la mitad de los proyectos que tienen descriptores temáticos de la BCN y se midió una sola vez en la otra mitad, 1.380 proyectos, con un acuerdo de 96,8% (kappa 0,77). El título recupera el 84% de lo que los descriptores marcan como seguridad y suma proyectos que ellos no clasifican así, como varios de narcotráfico y cárceles. Los descriptores no sirven para clasificar porque casi no cubren los proyectos posteriores a 2018.</li>
-    <li>En la Figura 4 cada subconjunto se estimó por separado y los diputados se agrupan según el bloque de la estimación completa del período.</li>
+    <li>En la Figura 5 cada subconjunto se estimó por separado y los diputados se agrupan según el bloque de la estimación completa del período.</li>
     <li>La distancia al centro se mide desde el punto medio entre las medianas de <span class="var">d1</span> de los dos bloques. Para comparar a igual distancia, los diputados de cada período se agrupan en quintiles de esa distancia, y la brecha entre gobierno y oposición se calcula dentro de cada quintil con al menos tres diputados de cada bloque y se promedia. La comparación de cada diputado usa su percentil de <span class="var">d2</span> dentro de su quintil. Está en <code>R/05_centro.R</code>, que agregué el 28 de octubre de 2026.</li>
     <li>El código, las estimaciones por diputado (<a href="datos/bcall_periodos.csv">bcall_periodos.csv</a>) y el resumen por período (<a href="datos/resumen_periodos.csv">resumen_periodos.csv</a>) están en el <a href="https://github.com/Alcatruz/bcall-camara-2002-2026">repositorio</a>.</li>
   </ul>
@@ -411,7 +428,85 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
     Plotly.react("fig-franjas", data, layout, CONFIG);
   }
 
-  // Figura 3 ------------------------------------------------------------------
+  // Figura 3, densidad por bloque -----------------------------------------------
+  function alfa(hex, a) {
+    var h = hex.replace("#", "");
+    if (h.length === 3) h = h.replace(/(.)/g, "$1$1");
+    var n = parseInt(h, 16);
+    return "rgba(" + (n >> 16 & 255) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")";
+  }
+  function mediana(v) {
+    var o = v.slice().sort(function (a, b) { return a - b; }), k = o.length;
+    return k % 2 ? o[(k - 1) / 2] : (o[k / 2 - 1] + o[k / 2]) / 2;
+  }
+  // núcleo gaussiano con el ancho de banda de Silverman
+  function densidad(v, xs) {
+    var n = v.length, o = v.slice().sort(function (a, b) { return a - b; });
+    var m = v.reduce(function (s, x) { return s + x; }, 0) / n;
+    var sd = Math.sqrt(v.reduce(function (s, x) { return s + (x - m) * (x - m); }, 0) / (n - 1));
+    var iqr = o[Math.floor(0.75 * (n - 1))] - o[Math.floor(0.25 * (n - 1))];
+    var h = 0.9 * Math.min(sd, iqr > 0 ? iqr / 1.34 : sd) * Math.pow(n, -0.2);
+    return xs.map(function (x) {
+      var s = 0;
+      for (var i = 0; i < n; i++) { var z = (x - v[i]) / h; s += Math.exp(-0.5 * z * z); }
+      return s / (n * h * Math.sqrt(2 * Math.PI));
+    });
+  }
+  var medida = "d1";
+  function figDensidad(T) {
+    var v = medida, n = PER.length, ALTO = 1.3;
+    var todos = B.est.map(function (d) { return d[v]; });
+    var lo = Math.min.apply(null, todos), hi = Math.max.apply(null, todos), pad = 0.1 * (hi - lo);
+    var xs = [];
+    for (var k = 0; k <= 200; k++) xs.push(lo - pad + (hi - lo + 2 * pad) * k / 200);
+    var cx = xs.concat([xs[xs.length - 1], xs[0]]);
+    var data = [];
+    PER.forEach(function (p, i) {
+      var filas = B.est.filter(function (d) { return d.p === p; }), b = n - 1 - i;
+      var cur = ["left", "right"].map(function (bl) {
+        var x = filas.filter(function (d) { return d.b === bl; }).map(function (d) { return d[v]; });
+        return { bl: bl, n: x.length, med: mediana(x), f: densidad(x, xs).map(function (y) { return y * x.length / filas.length; }) };
+      });
+      var mx = Math.max(Math.max.apply(null, cur[0].f), Math.max.apply(null, cur[1].f));
+      var alto = function (y) { return b + ALTO * y / mx; };
+      // fondo opaco, para que cada período tape al de arriba
+      data.push({ type: "scatter", mode: "lines", x: cx, y: xs.map(function (x, j) { return alto(Math.max(cur[0].f[j], cur[1].f[j])); }).concat([b, b]),
+        fill: "toself", fillcolor: T.surface, line: { width: 0 }, hoverinfo: "skip", showlegend: false });
+      data.push({ type: "scatter", mode: "lines", x: [xs[0], xs[xs.length - 1]], y: [b, b], line: { color: T.axis, width: 1 }, hoverinfo: "skip", showlegend: false });
+      cur.forEach(function (c) {
+        var col = c.bl === "left" ? T["--izq"] : T["--der"];
+        var info = "<b>" + p + "</b> · bloque de " + BLOQUE[c.bl] + "<br>" + c.n + " diputados · mediana de " + v + " " + num(c.med, 2) + "<extra></extra>";
+        data.push({ type: "scatter", mode: "lines", x: cx, y: c.f.map(alto).concat([b, b]), fill: "toself", fillcolor: alfa(col, 0.3),
+          line: { width: 0 }, hoverinfo: "skip", showlegend: false });
+        // el contorno se corta donde la curva ya es casi cero
+        data.push({ type: "scatter", mode: "lines", name: "Bloque de " + BLOQUE[c.bl], legendgroup: c.bl, showlegend: i === 0,
+          x: xs, y: c.f.map(function (y) { return y < 0.004 * mx ? null : alto(y); }), line: { color: col, width: 1.3 }, hovertemplate: info });
+        // altura de la curva en la mediana
+        var j = Math.round((c.med - xs[0]) / (xs[1] - xs[0]));
+        data.push({ type: "scatter", mode: "lines", x: [c.med, c.med], y: [b, alto(c.f[j])], showlegend: false, hoverinfo: "skip",
+          line: { color: col, width: 1.5, dash: "dot" } });
+      });
+    });
+    var angosto = ancho("fig-densidad") < 560;
+    var layout = base(T, {
+      height: angosto ? 540 : 520,
+      margin: { l: angosto ? 44 : 78, r: 12, t: 36, b: 52 },
+      xaxis: eje(T, { range: [lo - pad, hi + pad], title: v === "d1" ? "d1  (izquierda ←   → derecha)" : "d2  (dispersión del voto)" }),
+      yaxis: eje(T, { range: [-0.15, n - 1 + ALTO + 0.05], tickvals: PER.map(function (p, i) { return n - 1 - i; }), showgrid: false,
+        ticktext: PER.map(function (p) { return angosto ? p.slice(2, 4) + "-" + p.slice(7, 9) : p; }) })
+    });
+    layout.yaxis.tickfont = { color: T.ink2 };
+    Plotly.react("fig-densidad", data, layout, CONFIG);
+  }
+  document.getElementById("sel-densidad").addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    medida = b.getAttribute("data-v");
+    Array.prototype.forEach.call(this.children, function (c) { c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
+    figDensidad(tok());
+  });
+
+  // Figura 4 ------------------------------------------------------------------
   function figGobierno(T) {
     var R = B.resumen;
     var y = R.map(function (r, i) { return i; });
@@ -457,7 +552,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
     Plotly.react("fig-gobierno", data, layout, CONFIG);
   }
 
-  // Figura 4, seguridad --------------------------------------------------------
+  // Figura 5, seguridad --------------------------------------------------------
   function figSeguridad(T) {
     var S = window.BCALL_SEG;
     if (!S) return;
@@ -496,7 +591,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
     Plotly.react("fig-seguridad", data, layout, CONFIG);
   }
 
-  // Figura 5 ------------------------------------------------------------------
+  // Figura 6 ------------------------------------------------------------------
   function figPersistencia(T) {
     var P = B.pares.filter(function (d) { return d.s !== "2026-2030"; });
     var angosto = ancho("fig-persistencia") < 600;
@@ -537,7 +632,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
     Plotly.react("fig-persistencia", data, layout, CONFIG);
   }
 
-  // Figura 5 ------------------------------------------------------------------
+  // Figura 7 ------------------------------------------------------------------
   var estado = { periodo: PER[PER.length - 2], busca: "" };
   var rango = (function () {
     var x = B.est.map(function (d) { return d.d1; }), y = B.est.map(function (d) { return d.d2; });
@@ -615,7 +710,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
 
   function todo() {
     var T = tok();
-    figDisputa(T); figFranjas(T); figGobierno(T); figSeguridad(T); figPersistencia(T); figExplorar(T);
+    figDisputa(T); figFranjas(T); figDensidad(T); figGobierno(T); figSeguridad(T); figPersistencia(T); figExplorar(T);
   }
 
   armarControles();
@@ -627,7 +722,7 @@ footer { font-family: var(--sans); font-size: 13px; color: var(--muted); padding
   var t;
   window.addEventListener("resize", function () {
     clearTimeout(t);
-    t = setTimeout(function () { var T = tok(); figDisputa(T); figFranjas(T); figGobierno(T); figSeguridad(T); figPersistencia(T); figExplorar(T); }, 200);
+    t = setTimeout(function () { var T = tok(); figDisputa(T); figFranjas(T); figDensidad(T); figGobierno(T); figSeguridad(T); figPersistencia(T); figExplorar(T); }, 200);
   });
 })();
 </script>
