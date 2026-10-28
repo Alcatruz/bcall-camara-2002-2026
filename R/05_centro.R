@@ -10,8 +10,7 @@
 #   B-Call estandariza cada votación, le da signo según el bloque y calcula d2
 #   como la desviación estándar de esos valores por diputado. Con dos bloques,
 #   un diputado de centro que vota siempre según su posición igual vota unas
-#   veces con cada bloque, y su d2 sube por construcción. La simulación está
-#   en Alcatruz/bcall-wnominate-camara (R/02_simulacion.R).
+#   veces con cada bloque, y su d2 sube por construcción.
 #
 # DECISIONES
 #   1. Centro de la sala = punto medio entre las medianas de d1 de los dos
