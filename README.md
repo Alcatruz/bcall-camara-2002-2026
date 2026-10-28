@@ -19,6 +19,9 @@ El post está en `index.html` y se publica con GitHub Pages.
 | `R/03_indicadores.R` | Calcula los indicadores del post y exporta `datos/` |
 | `R/04_seguridad.R` | Clasifica las votaciones de seguridad por título, valida contra los descriptores de la BCN y estima B-Call por separado |
 | `datos/seguridad_periodos.csv` | Medianas de `d2` por bloque, votaciones disputadas y correlación de `d1`, en seguridad y en el resto, por período |
+| `R/05_centro.R` | Repite las comparaciones de `d2` entre diputados a igual distancia del centro de la sala |
+| `datos/d2_relativo.csv` | Distancia al centro, quintil y percentil de `d2` dentro del quintil, por diputado y período |
+| `datos/centro_periodos.csv` | Brecha de `d2` entre oposición y gobierno, en bruto y dentro de quintiles de distancia, en todas las votaciones, en seguridad y en el resto |
 | `datos/seguridad.js` | Los datos de la sección de seguridad que lee la página |
 
 ## Datos y decisiones
