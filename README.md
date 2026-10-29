@@ -11,17 +11,12 @@ El post está en `index.html` y se publica con GitHub Pages.
 | Ruta | Qué es |
 |---|---|
 | `index.html` | El post, con gráficos interactivos (Plotly) |
-| `datos/bcall_periodos.csv` | `d1`, `d2` y bloque B-Call por diputado y período (957 filas, 505 diputados) |
-| `datos/resumen_periodos.csv` | Una fila por período con votaciones, pivot, medianas por bloque y votaciones disputadas |
 | `datos/datos.js` | Los datos que lee la página. Se genera con `R/03_indicadores.R` |
 | `R/01_base.R` | Arma la base de votos nominales por período |
 | `R/02_bcall.R` | Estima B-Call, una corrida por período |
-| `R/03_indicadores.R` | Calcula los indicadores del post y exporta `datos/` |
+| `R/03_indicadores.R` | Calcula los indicadores del post y arma `datos/datos.js` |
 | `R/04_seguridad.R` | Clasifica las votaciones de seguridad por título, valida contra los descriptores de la BCN y estima B-Call por separado |
-| `datos/seguridad_periodos.csv` | Medianas de `d2` por bloque, votaciones disputadas y correlación de `d1`, en seguridad y en el resto, por período |
 | `R/05_centro.R` | Repite las comparaciones de `d2` entre diputados a igual distancia del centro de la sala |
-| `datos/d2_relativo.csv` | Distancia al centro, quintil y percentil de `d2` dentro del quintil, por diputado y período |
-| `datos/centro_periodos.csv` | Brecha de `d2` entre oposición y gobierno, en bruto y dentro de quintiles de distancia, en todas las votaciones, en seguridad y en el resto |
 | `datos/seguridad.js` | Los datos de la sección de seguridad que lee la página |
 
 ## Datos y decisiones
